@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Event category page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFF8F3}
+a{color:#5B2A4A;text-decoration:none}a:hover{color:#C9A227}
+.ev{transition:transform .3s ease}
+.ev:hover{transform:translateY(-4px)}
+.arr{opacity:0;transition:opacity .25s}
+.ev:hover .arr{opacity:1}
+.book:hover{background:#C9A227 !important;color:#2B1022 !important}
+.chip:hover{background:#5B2A4A !important;color:#FFF8F3 !important}
+</style>
+</helmet>
+<div style="font-family:'Poppins',sans-serif;color:#5B2A4A;background:#FFF8F3;min-height:100%">
+
+<header style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding:20px 5%;background:#FFF8F3">
+<a href="Main.dc.html" style="display:flex;align-items:center;gap:10px">
+<span style="width:40px;height:40px;border-radius:50%;border:1.5px solid #C9A227;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#5B2A4A">B</span>
+<span style="font-family:'Playfair Display',serif;font-size:22px;font-weight:600;letter-spacing:.5px">[Brand name]</span>
+</a>
+<nav style="display:flex;flex-wrap:wrap;gap:28px;font-size:14px;align-items:center">
+<a href="Main.dc.html">Events</a>
+<a href="#menu">Menu</a>
+<a href="#contact">Contact</a>
+<a href="#contact" style="background:#5B2A4A;color:#FFF8F3;padding:10px 20px;border-radius:999px">Chat with us</a>
+</nav>
+</header>
+
+<section style="margin:0 2%;background:#F8E1E7;border-radius:28px;padding:64px 24px 72px;text-align:center">
+<a href="Main.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#8A5A75;margin-bottom:22px">
+<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+All celebrations</a>
+<p style="margin:0 0 10px;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9A7A10">Mehndi collection</p>
+<h1 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(40px,5vw,60px);line-height:1.15">Colourful nights, <span style="font-style:italic;color:#C9A227">full of joy</span></h1>
+<p style="margin:18px auto 0;max-width:540px;font-size:16px;line-height:1.7;color:#8A5A75">Swing your way through florals, fairy lights and dholki vibes. Swipe through each setup and tap the one you love.</p>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:72px 24px 96px">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:32px">
+<p style="margin:0;font-size:14px;color:#8A5A75">Showing <span style="color:#5B2A4A;font-weight:500">6 setups</span></p>
+<p style="margin:0;font-size:13px;color:#8A5A75">Swipe the photos to see more</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px">
+<sc-for list="{{events}}" as="e" hint-placeholder-count="6">
+<article class="ev" style="background:#FFFFFF;border:1px solid #F3D9E1;border-radius:26px;padding:12px;display:flex;flex-direction:column">
+<div style="position:relative;height:300px;border-radius:18px;overflow:hidden">
+<div style="display:flex;height:100%;transition:transform .5s ease;transform:translateX({{e.offset}})">
+<sc-for list="{{e.photos}}" as="p" hint-placeholder-count="3">
+<div style="min-width:100%;height:100%;background:{{p.bg}};display:flex;align-items:center;justify-content:center;font-size:12px;color:#8A5A75">{{p.label}}</div>
+</sc-for>
+</div>
+<sc-if value="{{e.hasPrice}}" hint-placeholder-val="{{true}}">
+<span style="position:absolute;top:14px;left:14px;background:rgba(255,248,243,.95);color:#5B2A4A;font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px">{{e.price}}</span>
+</sc-if>
+<button class="arr" aria-label="Previous photo" onClick="{{e.prev}}" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,248,243,.92);color:#5B2A4A;display:flex;align-items:center;justify-content:center;cursor:pointer">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+</button>
+<button class="arr" aria-label="Next photo" onClick="{{e.next}}" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,248,243,.92);color:#5B2A4A;display:flex;align-items:center;justify-content:center;cursor:pointer">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+</button>
+<div style="position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:6px">
+<sc-for list="{{e.dots}}" as="d" hint-placeholder-count="3">
+<span style="height:6px;border-radius:3px;transition:all .4s;width:{{d.w}};background:{{d.c}}"></span>
+</sc-for>
+</div>
+</div>
+<div style="padding:18px 10px 8px;display:flex;flex-direction:column;flex:1">
+<h3 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:23px">{{e.title}}</h3>
+<p style="margin:8px 0 20px;font-size:14px;line-height:1.7;color:#8A5A75;white-space:pre-line;flex:1">{{e.details}}</p>
+<a class="book" href="#book" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#5B2A4A;color:#FFF8F3;padding:14px;border-radius:999px;font-size:14px;font-weight:500;transition:all .2s">
+<svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3L3 21z"/></svg>
+Book this look</a>
+</div>
+</article>
+</sc-for>
+</div>
+</section>
+
+<section style="max-width:1000px;margin:0 auto;padding:0 24px 100px;text-align:center">
+<p style="margin:0 0 10px;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9A7A10">Keep exploring</p>
+<h2 style="margin:0 0 28px;font-family:'Playfair Display',serif;font-weight:500;font-size:34px">Other celebrations</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+<a class="chip" href="Main.dc.html" style="border:1.5px solid #5B2A4A;padding:12px 26px;border-radius:999px;font-size:14px;transition:all .2s">Walima</a>
+<a class="chip" href="Main.dc.html" style="border:1.5px solid #5B2A4A;padding:12px 26px;border-radius:999px;font-size:14px;transition:all .2s">Barat</a>
+<a class="chip" href="Main.dc.html" style="border:1.5px solid #5B2A4A;padding:12px 26px;border-radius:999px;font-size:14px;transition:all .2s">Qawwali Night</a>
+<a class="chip" href="#menu" style="border:1.5px solid #C9A227;background:#C9A227;color:#2B1022;padding:12px 26px;border-radius:999px;font-size:14px;transition:all .2s">See our menu</a>
+</div>
+</section>
+
+<footer id="contact" style="background:#5B2A4A;color:#F8E1E7;padding:40px 5%;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:13px">
+<span style="font-family:'Playfair Display',serif;font-size:20px;color:#FFF8F3">[Brand name]</span>
+<span>[City] · [Phone number] · Instagram</span>
+<span>© 2026 All rights reserved</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2140}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = { idx: {} }; }
+renderVals() {
+const tones = ['#F3DCE2', '#F6E7D8', '#EBD3DA', '#F3D9A8'];
+const data = [
+{ title: 'Pink Floral Stage', price: 'From Rs 85,000', details: 'Fresh flower stage, a floral jhoola, fairy lights and floor seating with cushions.', n: 4 },
+{ title: 'Marigold Courtyard', price: 'From Rs 70,000', details: 'Genda phool strings, brass diyas and colourful gaddas for an open-air mehndi.', n: 3 },
+{ title: 'Mirror Work Lounge', price: '', details: 'Mirror-work tents, low tables and lanterns.\nPrice on request.', n: 3 },
+{ title: 'Peach Petal Swing', price: 'From Rs 95,000', details: 'Peach and ivory florals around a swing, with a matching photo corner.', n: 4 },
+{ title: 'Dholki Night Setup', price: 'From Rs 45,000', details: 'Cosy dholki corner with rugs, cushions, fairy lights and a mini stage.', n: 3 },
+{ title: 'Rose Gold Entrance', price: 'From Rs 30,000', details: 'Grand entrance arch with roses, drapes and a welcome sign.', n: 3 }
+];
+const events = data.map((e, k) => {
+const cur = this.state.idx[k] || 0;
+const go = (d) => this.setState({ idx: { ...this.state.idx, [k]: (cur + d + e.n) % e.n } });
+const photos = Array.from({ length: e.n }, (_, j) => ({ bg: tones[(k + j) % 4], label: 'Photo ' + (j + 1) + ' of ' + e.n }));
+const dots = photos.map((_, j) => ({ w: j === cur ? '22px' : '6px', c: j === cur ? '#C9A227' : 'rgba(255,248,243,.9)' }));
+return { ...e, hasPrice: !!e.price, offset: '-' + cur * 100 + '%', photos, dots, prev: () => go(-1), next: () => go(1) };
+});
+return { events };
+}
+}
+</script>
+</body>
+</html>

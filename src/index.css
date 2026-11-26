@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Design tokens — usable as bg-cream, text-plum, border-gold, font-heading, etc. */
+@theme {
+  --color-cream: #fff8f3;
+  --color-blush: #f8e1e7;
+  --color-rose: #e8a0b4;
+  --color-gold: #c9a227;
+  --color-gold-hover: #b8901c;
+  --color-plum: #5b2a4a;
+  --color-plum-soft: #8a5a75;
+  --color-ink: #2b1022;
+
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Poppins", system-ui, sans-serif;
+  --font-sans: var(--font-body);
+
+  /* Home page animations (from home-design-reference.html) */
+  --animate-kb: kb 6s ease-out infinite alternate;
+  --animate-bob: bob 1.8s ease-in-out infinite;
+
+  @keyframes kb {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
+  }
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream font-body text-plum antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-medium;
+  }
+  ::selection {
+    @apply bg-blush text-plum;
+  }
+}
+
+/* Small uppercase, letter-spaced gold label above headings */
+@utility eyebrow {
+  @apply text-xs font-medium uppercase tracking-[0.25em] text-gold;
+}
