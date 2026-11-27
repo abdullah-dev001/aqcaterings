@@ -4,6 +4,7 @@ import Skeleton from '../ui/Skeleton.jsx'
 import { useSettings, useSections } from '../../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../../lib/whatsapp.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
+import SmartImage from '../ui/SmartImage.jsx'
 
 /* WhatsApp speech-bubble icon for the button (lucide has no brand logos). */
 const WhatsAppIcon = (p) => (
@@ -65,7 +66,7 @@ export default function Footer() {
             ) : (
               <Link to="/" className="flex items-center gap-3">
                 {settings?.logo_url ? (
-                  <img src={settings.logo_url} alt="" className="size-11 rounded-full object-cover" />
+                  <SmartImage small src={settings.logo_url} width={44} height={44} className="size-11 rounded-full object-cover" />
                 ) : (
                   <span className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-gold font-heading text-[20px] italic text-cream">
                     {initial}

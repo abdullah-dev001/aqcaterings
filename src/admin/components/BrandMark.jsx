@@ -1,4 +1,5 @@
 import { useSettings } from '../../hooks/useSiteData.js'
+import SmartImage from '../../components/ui/SmartImage.jsx'
 
 /** Logo (or initial circle) + brand name, from settings. */
 export default function BrandMark({ size = 'md', showName = true }) {
@@ -10,7 +11,7 @@ export default function BrandMark({ size = 'md', showName = true }) {
   return (
     <span className="flex min-w-0 items-center gap-2.5">
       {settings?.logo_url ? (
-        <img src={settings.logo_url} alt="" className={`${box} shrink-0 rounded-full object-cover`} />
+        <SmartImage small src={settings.logo_url} loading="eager" className={`${box} shrink-0 rounded-full bg-blush object-cover`} />
       ) : (
         <span className={`${box} flex shrink-0 items-center justify-center rounded-full border-[1.5px] border-gold font-heading italic text-plum`}>
           {initial}

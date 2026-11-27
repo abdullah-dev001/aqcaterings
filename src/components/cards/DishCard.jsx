@@ -1,4 +1,5 @@
 import Skeleton from '../ui/Skeleton.jsx'
+import SmartImage from '../ui/SmartImage.jsx'
 import { useSettings } from '../../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../../lib/whatsapp.js'
 import { shareLink } from '../../lib/shareLink.js'
@@ -38,16 +39,17 @@ export default function DishCard({ dish, categoryName, categorySlug }) {
       id={dish.slug}
       className="group flex scroll-mt-6 flex-col rounded-[22px] border border-[#F3D9E1] bg-white p-2.5 transition-transform duration-300 ease-[ease] hover:-translate-y-1"
     >
-      <div className="relative h-[200px] overflow-hidden rounded-[16px]">
-        {image ? (
-          <img
+      <div className="relative h-[200px] overflow-hidden rounded-[16px] bg-blush">
+        {image && (
+          <SmartImage
+            small
             src={image}
             alt={title}
-            loading="lazy"
-            className="absolute inset-0 size-full object-cover transition-transform duration-[600ms] ease-[ease] group-hover:scale-105"
+            width={800}
+            height={600}
+            transition="transition-[opacity,transform] duration-[300ms,600ms] ease-[ease]"
+            className="absolute inset-0 size-full object-cover group-hover:scale-105"
           />
-        ) : (
-          <div className="absolute inset-0 bg-blush" />
         )}
         {price && (
           <span className="absolute start-3 top-3 rounded-full bg-[rgba(255,248,243,.95)] px-[11px] py-[5px] text-[11px] font-medium text-plum rtl:py-0.5">

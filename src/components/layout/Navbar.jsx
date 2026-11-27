@@ -6,6 +6,7 @@ import LangToggle from './LangToggle.jsx'
 import { useSettings, useSections } from '../../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../../lib/whatsapp.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
+import SmartImage from '../ui/SmartImage.jsx'
 
 const navLink = 'text-plum transition-colors hover:text-gold'
 
@@ -57,7 +58,7 @@ export default function Navbar() {
         ) : (
           <>
             {settings?.logo_url ? (
-              <img src={settings.logo_url} alt="" className="size-10 rounded-full object-cover" />
+              <SmartImage small src={settings.logo_url} loading="eager" width={40} height={40} className="size-10 rounded-full object-cover" />
             ) : (
               <span className="flex size-10 items-center justify-center rounded-full border-[1.5px] border-gold font-heading text-[20px] italic text-plum">
                 {initial}

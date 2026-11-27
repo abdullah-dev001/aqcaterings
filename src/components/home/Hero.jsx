@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useHeroSlides, useSettings } from '../../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../../lib/whatsapp.js'
 import { useLang } from '../../i18n/LanguageContext.jsx'
+import SmartImage from '../ui/SmartImage.jsx'
 
 const INTERVAL_MS = 5000
 
@@ -22,13 +23,31 @@ export default function Hero() {
   // While loading, show the plain plum base (no slides) to avoid a flash of fallback colours.
   const slides = isLoading ? [] : data?.length ? data : FALLBACK_SLIDES
   const count = slides.length
+  const firstUrl = slides[0]?.image_url
+
+  // Slides 2+ (and the rotation) wait until the first photo has loaded,
+  // so the first image gets all the bandwidth. Colour fallbacks need no wait.
+  const [firstLoaded, setFirstLoaded] = useState(false)
+  const ready = firstLoaded || (count > 0 && !firstUrl)
+
+  // Preload the first slide as soon as its URL is known.
+  useEffect(() => {
+    if (!firstUrl) return
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = firstUrl
+    link.setAttribute('fetchpriority', 'high')
+    document.head.appendChild(link)
+    return () => link.remove()
+  }, [firstUrl])
 
   useEffect(() => {
     setActive(0)
-    if (count < 2) return
+    if (count < 2 || !ready) return
     const t = setInterval(() => setActive((i) => (i + 1) % count), INTERVAL_MS)
     return () => clearInterval(t)
-  }, [count])
+  }, [count, ready])
 
   return (
     <section
@@ -46,12 +65,17 @@ export default function Hero() {
           aria-hidden={k !== active}
         >
           {slide.image_url ? (
-            <img
-              src={slide.image_url}
-              alt=""
-              className="absolute inset-0 size-full animate-kb object-cover"
-              loading={k === 0 ? 'eager' : 'lazy'}
-            />
+            (k === 0 || ready) && (
+              <SmartImage
+                src={slide.image_url}
+                width={1600}
+                height={900}
+                className="absolute inset-0 size-full animate-kb object-cover"
+                loading={k === 0 ? 'eager' : 'lazy'}
+                fetchPriority={k === 0 ? 'high' : 'low'}
+                onLoad={k === 0 ? () => setFirstLoaded(true) : undefined}
+              />
+            )
           ) : (
             <div className="absolute inset-0 animate-kb" style={{ background: slide.color }} />
           )}

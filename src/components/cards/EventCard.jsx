@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Skeleton from '../ui/Skeleton.jsx'
+import SmartImage from '../ui/SmartImage.jsx'
 import { useSettings } from '../../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../../lib/whatsapp.js'
 import { shareLink } from '../../lib/shareLink.js'
@@ -41,6 +42,15 @@ export default function EventCard({ event, categoryName, categorySlug }) {
     return () => emblaApi.off('select', onSelect).off('reInit', onSelect)
   }, [emblaApi])
 
+  // Photos to render: every one already shown, plus the next one (preloaded lazily).
+  // Grows as the visitor swipes; photos never shown are never downloaded.
+  const [wanted, setWanted] = useState(() => new Set([0, 1]))
+  useEffect(() => {
+    if (images.length < 2) return
+    const nextIdx = (selected + 1) % images.length
+    setWanted((w) => (w.has(selected) && w.has(nextIdx) ? w : new Set([...w, selected, nextIdx])))
+  }, [selected, images.length])
+
   const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
   const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
 
@@ -60,28 +70,32 @@ export default function EventCard({ event, categoryName, categorySlug }) {
       id={event.slug}
       className="group flex scroll-mt-6 flex-col rounded-[26px] border border-[#F3D9E1] bg-white p-3 transition-transform duration-300 ease-[ease] hover:-translate-y-1"
     >
-      <div className="relative h-[300px] overflow-hidden rounded-[18px]">
-        {images.length === 0 ? (
-          <div className="h-full bg-blush" />
-        ) : images.length === 1 ? (
-          <img src={images[0]} alt={title} loading="lazy" className="size-full object-cover" />
-        ) : (
+      <div className="relative h-[300px] overflow-hidden rounded-[18px] bg-blush">
+        {images.length === 1 ? (
+          <SmartImage small src={images[0]} alt={title} width={800} height={600} className="size-full object-cover" />
+        ) : images.length > 1 ? (
           <div ref={emblaRef} className="h-full overflow-hidden">
             <div className="flex h-full touch-pan-y">
               {images.map((src, j) => (
                 <div key={`${src}-${j}`} className="h-full min-w-0 flex-[0_0_100%]">
-                  <img
-                    src={src}
-                    alt={t('card.photoOf', { title, n: j + 1, total: images.length })}
-                    loading="lazy"
-                    draggable="false"
-                    className="size-full select-none object-cover"
-                  />
+                  {/* Only photos the visitor has reached (plus the next one) are requested. */}
+                  {wanted.has(j) && (
+                    <SmartImage
+                      small
+                      src={src}
+                      alt={t('card.photoOf', { title, n: j + 1, total: images.length })}
+                      loading={j === selected ? 'eager' : 'lazy'}
+                      width={800}
+                      height={600}
+                      draggable="false"
+                      className="size-full select-none object-cover"
+                    />
+                  )}
                 </div>
               ))}
             </div>
           </div>
-        )}
+        ) : null}
 
         {price && (
           <span className="absolute start-3.5 top-3.5 rounded-full bg-[rgba(255,248,243,.95)] px-3 py-1.5 text-[12px] font-medium text-plum rtl:py-0.5">

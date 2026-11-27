@@ -1,4 +1,5 @@
 import { Loader2 } from 'lucide-react'
+import SmartImage from '../../components/ui/SmartImage.jsx'
 
 /* Small, consistent building blocks for the dashboard. */
 
@@ -158,9 +159,10 @@ export function ListSkeleton({ rows = 3 }) {
 }
 
 export function Thumb({ src, className = '' }) {
-  return src ? (
-    <img src={src} alt="" loading="lazy" className={`shrink-0 rounded-2xl object-cover ${className}`} />
-  ) : (
-    <div className={`shrink-0 rounded-2xl bg-blush ${className}`} />
+  // Wrapper keeps the blush background visible while the small copy fades in.
+  return (
+    <div className={`shrink-0 overflow-hidden rounded-2xl bg-blush ${className}`}>
+      {src && <SmartImage small src={src} width={160} height={160} className="size-full object-cover" />}
+    </div>
   )
 }

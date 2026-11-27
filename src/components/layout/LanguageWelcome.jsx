@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLang } from '../../i18n/LanguageContext.jsx'
 import { useSettings } from '../../hooks/useSiteData.js'
+import SmartImage from '../ui/SmartImage.jsx'
 
 /** First-visit language picker. Shown until a choice is saved in localStorage. */
 export default function LanguageWelcome() {
@@ -31,7 +32,7 @@ export default function LanguageWelcome() {
       <div className="w-full max-w-[400px] animate-pop rounded-[28px] bg-blush px-7 py-10 text-center sm:px-10">
         <div className="flex flex-col items-center gap-3">
           {settings?.logo_url ? (
-            <img src={settings.logo_url} alt="" className="size-16 rounded-full object-cover" />
+            <SmartImage small src={settings.logo_url} loading="eager" width={64} height={64} className="size-16 rounded-full object-cover" />
           ) : (
             <span className="flex size-16 items-center justify-center rounded-full border-[1.5px] border-gold font-heading text-[28px] italic text-plum">
               {initial}

@@ -15,6 +15,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { uploadImage } from '../lib/storage.js'
 import { friendlyError } from '../lib/errors.js'
 import { Progress } from './ImageUpload.jsx'
+import SmartImage from '../../components/ui/SmartImage.jsx'
 
 function SortableImage({ url, index, onRemove }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: url })
@@ -29,7 +30,7 @@ function SortableImage({ url, index, onRemove }) {
       {...attributes}
       {...listeners}
     >
-      <img src={url} alt="" draggable="false" className="size-full select-none object-cover" />
+      <SmartImage small src={url} draggable="false" width={240} height={240} className="size-full select-none object-cover" />
       {index === 0 && (
         <span className="absolute bottom-2 left-2 rounded-full bg-gold px-2.5 py-1 text-[11px] font-medium text-ink">
           Cover

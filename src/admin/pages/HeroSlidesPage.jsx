@@ -11,6 +11,7 @@ import { Progress } from '../components/ImageUpload.jsx'
 import { ConfirmDialog } from '../components/Modal.jsx'
 import { Btn, Card, EmptyState, IconBtn, PageHeader, Toggle } from '../components/ui.jsx'
 import LoadError from '../../components/ui/LoadError.jsx'
+import SmartImage from '../../components/ui/SmartImage.jsx'
 
 export default function HeroSlidesPage() {
   const qc = useQueryClient()
@@ -104,12 +105,9 @@ export default function HeroSlidesPage() {
           {slides.map((s, i) => (
             <Card key={s.id} className="overflow-hidden p-2">
               <div className="relative">
-                <img
-                  src={s.image_url}
-                  alt=""
-                  loading="lazy"
-                  className={`aspect-video w-full rounded-[18px] object-cover ${s.is_visible ? '' : 'opacity-40'}`}
-                />
+                <div className={`aspect-video w-full overflow-hidden rounded-[18px] bg-blush ${s.is_visible ? '' : 'opacity-40'}`}>
+                  <SmartImage small src={s.image_url} width={800} height={450} className="size-full object-cover" />
+                </div>
                 <span className="absolute left-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/95 text-[13px] font-medium text-plum">
                   {i + 1}
                 </span>

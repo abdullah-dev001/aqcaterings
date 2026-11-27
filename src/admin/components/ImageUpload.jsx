@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { uploadImage } from '../lib/storage.js'
 import { friendlyError } from '../lib/errors.js'
 import { Btn } from './ui.jsx'
+import SmartImage from '../../components/ui/SmartImage.jsx'
 
 /** Progress bar used by all uploaders. */
 export function Progress({ value }) {
@@ -54,7 +55,9 @@ export default function ImageUpload({ value, onChange, folder, onUploaded, onBus
 
       {value && !uploading ? (
         <div className={`flex ${round ? 'items-center gap-4' : 'flex-col gap-3'}`}>
-          <img src={value} alt="" className={`${shape} border border-[#F3D9E1] object-cover`} />
+          <div className={`${shape} overflow-hidden border border-[#F3D9E1] bg-blush`}>
+            <SmartImage small src={value} className="size-full object-cover" />
+          </div>
           <div className="flex flex-wrap gap-2">
             <Btn variant="secondary" size="sm" onClick={() => inputRef.current?.click()}>
               <RefreshCw className="size-4" /> Replace

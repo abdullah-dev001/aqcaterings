@@ -5,6 +5,7 @@ import LoadError from '../components/ui/LoadError.jsx'
 import { useSettings, useSections, useFeaturedDishes } from '../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../lib/whatsapp.js'
 import { useLang } from '../i18n/LanguageContext.jsx'
+import SmartImage from '../components/ui/SmartImage.jsx'
 
 const steps = [
   {
@@ -55,15 +56,17 @@ export default function Home() {
               to={`/events/${cat.slug}`}
               className="group relative block h-[380px] overflow-hidden rounded-[24px]"
             >
-              {coverOf(cat) ? (
-                <img
+              <div className="absolute inset-0 bg-blush" />
+              {coverOf(cat) && (
+                <SmartImage
+                  small
                   src={coverOf(cat)}
                   alt={pick(cat, 'name')}
-                  loading="lazy"
-                  className="absolute inset-0 size-full object-cover transition-transform duration-[600ms] ease-[ease] group-hover:scale-105"
+                  width={800}
+                  height={1013}
+                  transition="transition-[opacity,transform] duration-[300ms,600ms] ease-[ease]"
+                  className="absolute inset-0 size-full object-cover group-hover:scale-105"
                 />
-              ) : (
-                <div className="absolute inset-0 bg-blush" />
               )}
               <div className="absolute inset-x-3.5 bottom-3.5 flex items-center justify-between rounded-[18px] bg-[rgba(255,248,243,.94)] px-5 py-[18px] rtl:py-3">
                 <div>
@@ -139,11 +142,11 @@ export default function Home() {
               ))}
             {featured.data?.map((d) => (
               <div key={d.id} className="rounded-[22px] bg-cream p-3">
-                {d.images?.[0] ? (
-                  <img src={d.images[0]} alt={pick(d, 'title')} loading="lazy" className="h-[200px] w-full rounded-[16px] object-cover" />
-                ) : (
-                  <div className="h-[200px] rounded-[16px] bg-blush" />
-                )}
+                <div className="h-[200px] overflow-hidden rounded-[16px] bg-blush">
+                  {d.images?.[0] && (
+                    <SmartImage small src={d.images[0]} alt={pick(d, 'title')} width={800} height={600} className="size-full object-cover" />
+                  )}
+                </div>
                 <div className="px-2 pb-2 pt-3.5">
                   <span className="text-[11px] uppercase tracking-[1.5px] text-[#9A7A10] rtl:text-[13px]">{pick(d.section, 'name')}</span>
                   <h3 className="mt-1 font-heading text-[21px] font-medium rtl:text-[19px]">{pick(d, 'title')}</h3>
