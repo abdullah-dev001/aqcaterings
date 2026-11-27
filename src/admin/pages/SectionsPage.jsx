@@ -10,7 +10,7 @@ import useListActions from '../useListActions.js'
 import RowControls from '../components/RowControls.jsx'
 import SectionForm from '../components/SectionForm.jsx'
 import { ConfirmDialog } from '../components/Modal.jsx'
-import { Btn, Card, EmptyState, ListSkeleton, PageHeader, Thumb } from '../components/ui.jsx'
+import { Btn, Card, EmptyState, ListSkeleton, PageHeader, Thumb, UrBadge } from '../components/ui.jsx'
 import LoadError from '../../components/ui/LoadError.jsx'
 import { COPY, plural } from '../copy.js'
 
@@ -73,6 +73,7 @@ export default function SectionsPage({ kind }) {
                   <p className="text-[13px] text-plum-soft">
                     {plural(s.items?.length ?? 0, copy.item, copy.items)}
                     {!s.is_visible && <span className="ml-2 rounded-full bg-blush px-2 py-0.5 text-[11px] font-medium">Hidden</span>}
+                    <UrBadge filled={Boolean(s.name_ur?.trim())} />
                   </p>
                 </div>
                 <ChevronRight className="size-5 shrink-0 text-plum-soft" />

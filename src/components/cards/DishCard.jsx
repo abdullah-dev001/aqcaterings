@@ -2,6 +2,7 @@ import Skeleton from '../ui/Skeleton.jsx'
 import { useSettings } from '../../hooks/useSiteData.js'
 import { buildWhatsAppLink } from '../../lib/whatsapp.js'
 import { shareLink } from '../../lib/shareLink.js'
+import { useLang } from '../../i18n/LanguageContext.jsx'
 
 /** Same footprint as DishCard, for loading states. */
 export function DishCardSkeleton() {
@@ -17,11 +18,20 @@ export function DishCardSkeleton() {
   )
 }
 
+/** categoryName should already be in the active language (pick(section, 'name')). */
 export default function DishCard({ dish, categoryName, categorySlug }) {
   const { data: settings } = useSettings()
+  const { t, pick } = useLang()
   const image = dish.images?.[0]
+  const title = pick(dish, 'title')
+  const price = pick(dish, 'price')
   const link = shareLink('d', categorySlug, dish.slug)
-  const askHref = buildWhatsAppLink(settings, dish, categoryName, link)
+  const askHref = buildWhatsAppLink(
+    { ...settings, message_template: pick(settings, 'message_template') },
+    { title },
+    categoryName,
+    link,
+  )
 
   return (
     <article
@@ -32,35 +42,35 @@ export default function DishCard({ dish, categoryName, categorySlug }) {
         {image ? (
           <img
             src={image}
-            alt={dish.title}
+            alt={title}
             loading="lazy"
             className="absolute inset-0 size-full object-cover transition-transform duration-[600ms] ease-[ease] group-hover:scale-105"
           />
         ) : (
           <div className="absolute inset-0 bg-blush" />
         )}
-        {dish.price && (
-          <span className="absolute left-3 top-3 rounded-full bg-[rgba(255,248,243,.95)] px-[11px] py-[5px] text-[11px] font-medium text-plum">
-            {dish.price}
+        {price && (
+          <span className="absolute start-3 top-3 rounded-full bg-[rgba(255,248,243,.95)] px-[11px] py-[5px] text-[11px] font-medium text-plum rtl:py-0.5">
+            {price}
           </span>
         )}
       </div>
 
       <div className="flex flex-1 flex-col px-2 pb-1.5 pt-3.5">
-        <h3 className="font-heading text-[20px] font-medium">{dish.title}</h3>
+        <h3 className="font-heading text-[20px] font-medium rtl:text-[18px]">{title}</h3>
         <p className="mb-4 mt-1.5 flex-1 whitespace-pre-line text-[13px] leading-[1.6] text-plum-soft">
-          {dish.details}
+          {pick(dish, 'details')}
         </p>
         <a
           href={askHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-[7px] rounded-full border-[1.5px] border-plum p-2.5 text-[13px] font-medium text-plum transition-all duration-200 hover:bg-plum hover:text-cream"
+          className="flex items-center justify-center gap-[7px] rounded-full border-[1.5px] border-plum p-2.5 text-[13px] font-medium text-plum transition-all duration-200 hover:bg-plum hover:text-cream rtl:py-1.5"
         >
           <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
             <path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3L3 21z" />
           </svg>
-          {settings?.dish_button_text || 'Add to my menu'}
+          {pick(settings, 'dish_button_text') || t('card.addDish')}
         </a>
       </div>
     </article>

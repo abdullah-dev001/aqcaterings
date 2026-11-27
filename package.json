@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed:images": "node --env-file=.env scripts/seed-images.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.5",
     "@vitejs/plugin-react": "^6.3.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.5",
     "vite": "^8.4.0"
   }

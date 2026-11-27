@@ -10,7 +10,7 @@ import useListActions from '../useListActions.js'
 import RowControls from '../components/RowControls.jsx'
 import ItemForm from '../components/ItemForm.jsx'
 import { ConfirmDialog } from '../components/Modal.jsx'
-import { Btn, Card, EmptyState, IconBtn, ListSkeleton, PageHeader, Thumb } from '../components/ui.jsx'
+import { Btn, Card, EmptyState, IconBtn, ListSkeleton, PageHeader, Thumb, UrBadge } from '../components/ui.jsx'
 import LoadError from '../../components/ui/LoadError.jsx'
 import { COPY, plural } from '../copy.js'
 
@@ -105,6 +105,7 @@ export default function ItemsPage({ kind }) {
                   <p className="truncate text-[13px] text-plum-soft">
                     {item.price || 'No price'} · {plural(item.images?.length ?? 0, 'photo', 'photos')}
                     {!item.is_visible && <span className="ml-2 rounded-full bg-blush px-2 py-0.5 text-[11px] font-medium">Hidden</span>}
+                    <UrBadge filled={Boolean(item.title_ur?.trim())} />
                   </p>
                 </div>
               </button>

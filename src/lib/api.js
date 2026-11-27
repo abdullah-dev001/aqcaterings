@@ -77,7 +77,7 @@ export async function getFeaturedDishes(limit = 4) {
   const data = unwrap(
     await supabase
       .from('items')
-      .select('*, sections!inner(name, slug, kind, is_visible)')
+      .select('*, sections!inner(name, name_ur, slug, kind, is_visible)')
       .eq('is_featured', true)
       .eq('is_visible', true)
       .eq('sections.kind', 'menu')

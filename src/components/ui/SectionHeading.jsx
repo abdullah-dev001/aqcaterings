@@ -11,12 +11,12 @@ export default function SectionHeading({
   as: Tag = 'h2',
   className = '',
 }) {
-  const alignment = align === 'left' ? 'text-left items-start' : 'text-center items-center mx-auto'
+  const alignment = align === 'left' ? 'text-start items-start' : 'text-center items-center mx-auto'
 
   return (
     <div className={`flex max-w-2xl flex-col gap-3 ${alignment} ${className}`}>
       {eyebrow && <span className="eyebrow">{eyebrow}</span>}
-      <Tag className="text-3xl leading-tight text-plum sm:text-4xl md:text-5xl">
+      <Tag className="text-3xl leading-tight text-plum sm:text-4xl md:text-5xl rtl:text-[27px] sm:rtl:text-[32px] md:rtl:text-[43px]">
         {renderTitle(title, accent)}
       </Tag>
       {subtitle && <p className="text-base text-plum-soft sm:text-lg">{subtitle}</p>}

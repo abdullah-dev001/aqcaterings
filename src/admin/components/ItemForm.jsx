@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import Modal from './Modal.jsx'
 import ImagesEditor from './ImagesEditor.jsx'
-import { Btn, Field, Toggle, inputClass } from './ui.jsx'
+import { Btn, Field, Pair, Toggle, inputClass, urInputClass } from './ui.jsx'
 import { insertRow, uniqueSlug, updateRow } from '../lib/adminApi.js'
 import { cleanupOnCancel, cleanupOnSave } from '../lib/storage.js'
 import { invalidateContent } from '../lib/invalidate.js'
@@ -25,6 +25,9 @@ export default function ItemForm({ kind, section, item, sortOrder, onClose }) {
   const [images, setImages] = useState(item?.images ?? [])
   const [visible, setVisible] = useState(item?.is_visible ?? true)
   const [featured, setFeatured] = useState(item?.is_featured ?? false)
+  const [titleUr, setTitleUr] = useState(item?.title_ur ?? '')
+  const [detailsUr, setDetailsUr] = useState(item?.details_ur ?? '')
+  const [priceUr, setPriceUr] = useState(item?.price_ur ?? '')
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(0)
   const uploaded = useRef([])
@@ -45,6 +48,9 @@ export default function ItemForm({ kind, section, item, sortOrder, onClose }) {
         title: title.trim(),
         details: orNull(details),
         price: orNull(price),
+        title_ur: orNull(titleUr),
+        details_ur: orNull(detailsUr),
+        price_ur: orNull(priceUr),
         images,
         is_visible: visible,
         ...(isMenu && { is_featured: featured }),
@@ -87,16 +93,29 @@ export default function ItemForm({ kind, section, item, sortOrder, onClose }) {
       }
     >
       <form onSubmit={save} className="flex flex-col gap-5">
-        <Field label="Title" htmlFor="item-title">
-          <input
-            id="item-title"
-            autoFocus={!item}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder={isMenu ? 'e.g. Mutton Biryani' : 'e.g. Pink Floral Stage'}
-            className={inputClass}
-          />
-        </Field>
+        <Pair>
+          <Field label="Title" htmlFor="item-title">
+            <input
+              id="item-title"
+              autoFocus={!item}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder={isMenu ? 'e.g. Mutton Biryani' : 'e.g. Pink Floral Stage'}
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Title (Urdu)" htmlFor="item-title-ur" optional>
+            <input
+              id="item-title-ur"
+              dir="rtl"
+              lang="ur"
+              value={titleUr}
+              onChange={(e) => setTitleUr(e.target.value)}
+              placeholder={isMenu ? 'مٹن بریانی' : 'گلابی پھولوں کا اسٹیج'}
+              className={urInputClass}
+            />
+          </Field>
+        </Pair>
 
         <Field label="Photos" hint={images.length === 0 ? 'Add one or more photos. The first photo is the cover.' : undefined}>
           <ImagesEditor
@@ -117,10 +136,26 @@ export default function ItemForm({ kind, section, item, sortOrder, onClose }) {
             className={`${inputClass} min-h-[140px] resize-y leading-relaxed`}
           />
         </Field>
-
-        <Field label="Price" htmlFor="item-price" optional hint="Shown as a small label on the photo, e.g. From Rs 85,000 or Per head">
-          <input id="item-price" value={price} onChange={(e) => setPrice(e.target.value)} className={inputClass} />
+        <Field label="Details (Urdu)" htmlFor="item-details-ur" optional hint="If empty, the English details are shown on the Urdu site.">
+          <textarea
+            id="item-details-ur"
+            dir="rtl"
+            lang="ur"
+            rows={6}
+            value={detailsUr}
+            onChange={(e) => setDetailsUr(e.target.value)}
+            className={`${urInputClass} min-h-[160px] resize-y`}
+          />
         </Field>
+
+        <Pair>
+          <Field label="Price" htmlFor="item-price" optional hint="Shown as a small label on the photo, e.g. From Rs 85,000 or Per head">
+            <input id="item-price" value={price} onChange={(e) => setPrice(e.target.value)} className={inputClass} />
+          </Field>
+          <Field label="Price (Urdu)" htmlFor="item-price-ur" optional hint="e.g. 85,000 روپے سے شروع">
+            <input id="item-price-ur" dir="rtl" lang="ur" value={priceUr} onChange={(e) => setPriceUr(e.target.value)} className={urInputClass} />
+          </Field>
+        </Pair>
 
         <div className="flex flex-col gap-4 rounded-2xl bg-cream p-4">
           <Toggle checked={visible} onChange={setVisible} label="Visible on the website" />

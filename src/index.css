@@ -14,10 +14,32 @@
   --font-heading: "Playfair Display", Georgia, serif;
   --font-body: "Poppins", system-ui, sans-serif;
   --font-sans: var(--font-body);
+  --font-urdu: "Noto Nastaliq Urdu", "Poppins", serif;
 
   /* Home page animations (from home-design-reference.html) */
   --animate-kb: kb 6s ease-out infinite alternate;
   --animate-bob: bob 1.8s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-pop: pop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
 
   @keyframes kb {
     from {
@@ -59,4 +81,25 @@
 /* Small uppercase, letter-spaced gold label above headings */
 @utility eyebrow {
   @apply text-xs font-medium uppercase tracking-[0.25em] text-gold;
+}
+
+/*
+ * Urdu mode (<html lang="ur" dir="rtl">, set by LanguageProvider).
+ * These rules are deliberately outside any @layer so they win over Tailwind
+ * utilities: Nastaliq everywhere, more line-height so tall letters never clip,
+ * and no letter-spacing / uppercase / italics (they break or distort the script).
+ * Heading sizes are reduced per element with rtl: utilities.
+ */
+html[lang='ur'] body,
+html[lang='ur'] body * {
+  font-family: var(--font-urdu);
+  line-height: 2;
+  letter-spacing: 0;
+  text-transform: none;
+}
+html[lang='ur'] body :is(h1, h2, h3, h4) {
+  line-height: 1.6;
+}
+html[lang='ur'] body .italic {
+  font-style: normal;
 }

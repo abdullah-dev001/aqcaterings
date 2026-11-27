@@ -1,18 +1,15 @@
 import Container from '../components/ui/Container.jsx'
 import SectionHeading from '../components/ui/SectionHeading.jsx'
 import Button from '../components/ui/Button.jsx'
+import { useLang } from '../i18n/LanguageContext.jsx'
 
 export default function NotFound() {
+  const { t } = useLang()
   return (
     <Container className="flex flex-col items-center gap-8 py-32">
-      <SectionHeading
-        eyebrow="404"
-        title="This page got lost"
-        accent="lost"
-        subtitle="The page you are looking for doesn't exist or has moved."
-      />
+      <SectionHeading eyebrow="404" title={t('notFound.title')} accent={t('notFound.accent')} subtitle={t('notFound.text')} />
       <Button to="/" variant="outline">
-        Back to home
+        {t('notFound.back')}
       </Button>
     </Container>
   )

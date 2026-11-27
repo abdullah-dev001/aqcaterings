@@ -83,6 +83,23 @@ export const inputClass =
   'w-full rounded-2xl border border-[#EBD3DA] bg-white px-4 py-3 text-base text-plum outline-none transition ' +
   'placeholder:text-plum-soft/60 focus:border-gold focus:ring-2 focus:ring-gold/20'
 
+/** Urdu inputs: right-to-left with the Nastaliq font. Use together with dir="rtl". */
+export const urInputClass = `${inputClass} font-urdu leading-[2] py-2`
+
+/** English field and its Urdu twin side by side (stacked on mobile). */
+export function Pair({ children }) {
+  return <div className="grid gap-5 sm:grid-cols-2">{children}</div>
+}
+
+/** Small "UR" badge when Urdu is filled, soft hint when it isn't. */
+export function UrBadge({ filled }) {
+  return filled ? (
+    <span className="ms-2 inline-block rounded-full bg-[#E9F3EA] px-2 py-0.5 align-middle text-[11px] font-medium text-[#2F6B3A]">UR</span>
+  ) : (
+    <span className="ms-2 inline-block align-middle text-[11px] italic text-plum-soft/70">Urdu missing</span>
+  )
+}
+
 /** Label + control + optional hint. */
 export function Field({ label, hint, htmlFor, optional = false, children }) {
   return (
